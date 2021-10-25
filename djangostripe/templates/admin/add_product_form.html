@@ -1,0 +1,99 @@
+{% extends 'base/side.html' %}
+{% block content %}
+
+<!------ Include the above in your HEAD tag ---------->
+
+   <div class="col-md-6 offset-md-3" style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+
+                    <!-- form card cc payment -->
+                    <div class="card card-outline-secondary">
+                        <div class="card-body">
+                            <h3 class="text-center">Add plans</h3>
+                            <hr>
+                            <!-- {% include 'messages.html' %} -->
+                      <!--       <div class="alert alert-info p-2 pb-3">
+                                <a class="close font-weight-normal initialism" data-dismiss="alert" href="#"><samp>×</samp></a> 
+                                CVC code is required.
+                            </div> -->
+                            <form  method="POST" class="form" role="form" autocomplete="off">
+                              {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="cc_name">Product Name</label>
+                                    <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter your product name" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Product Descriptione</label>
+                                    <textarea type="text" class="form-control" rows="8"    placeholder="specify description"name="product_description" required=""></textarea>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-12">product price in &#x20b9;</label>
+                                    <div class="col-md-4">
+                                        <input type="number" name="product_price" class="form-control" size="0">
+
+                                    </div>
+                                    <div class="col-md-4">
+<!--                                         <input type="radio" id="onetime" name="product_type" value="one_time">
+                                        <label for="onetime">One time</label> -->
+                                        <input type="checkbox" id="recurring" name="product_type" value="recurring">
+                                        <label for="recurring">recurring</label>
+
+                                    </div>
+   <!--                                  <div class="col-md-4">
+                                        <input type="text" class="form-control" autocomplete="off" maxlength="3"  name="cvc"pattern="\d{3}" title="Three digits at back of your card" required="" placeholder="CVC">
+                                    </div> -->
+                                </div>
+                        <div id="show-me" style="display:none;">
+                                <div class="row"  >
+                                    <label class="col-md-12">Choose Recurring</label>
+                                
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="recurring_type" size="0">
+                                            <option value="day">Daily</option>
+                                            <option value="week">Weekly</option>
+                                            <option value="month">Monthly</option>
+                                            <option value="year">Yearly</option>
+                                            
+                                        </select>
+                                    </div>
+                                    </div>
+                               
+                        </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-default btn-lg btn-block">Cancel</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+<!--                             <div class="form-group row">
+                                    <div class="col-md-6">
+            <button class="btn btn-success btn-lg btn-block"> <a href="{% url 'payments-subscription' %}">Subscription</a></button>
+                                    </div>
+                            </div> -->
+                        </div>
+                    </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+   $('input[type="checkbox"]').click(function() {
+       if($(this).attr('id') == 'recurring') {
+            $('#show-me').slideToggle();
+                      
+       }
+
+       else {
+            $('#show-me').hide();
+            $('#show-me').find("input,select,textarea,button").prop('disabled',true);
+           
+       }
+   });
+});
+</script>
+{% endblock content %}
+<!-- /form card cc payment -->
+                
+                <!-- <p class="copyright" style="text-align:center;padding:40px 0;">Developed by <a href="https://uny.ro">UNY WEB DESIGN</a></p> -->

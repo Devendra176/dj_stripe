@@ -1,0 +1,11 @@
+{% if messages %}
+								{% for message in messages %}
+								<div style="text-align: center;" {% if message.tags == "error" %}class="alert alert-danger m-2" {% else %}
+								  
+								{% endif %} class="alert alert-{{ message.tags }} m-2"
+								role="alert" id="msg">
+									{{ message }}
+								</div>
+								<script type="text/javascript">window.setTimeout("document.getElementById('msg').style.display='none';", 5000); </script>
+								{% endfor %}
+	 {% endif %}

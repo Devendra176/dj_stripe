@@ -1,0 +1,116 @@
+{% extends 'base/side.html' %}
+{% load customtag %}
+<!------ Include the above in your HEAD tag ---------->
+{% block content %}
+
+   <div class="col-md-6 offset-md-3"style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+
+                    <!-- form card cc payment -->
+                    <div class="card card-outline-secondary">
+                        <div class="card-body">
+                            <h3 class="text-center">Subscription Plan</h3>
+                            <hr>
+                            <table>
+  <tr>
+    <th>S.NO.</th>
+    <th>Plan Name</th>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Type</th>
+  </tr>
+{% for plan in page_obj %}
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{plan.product.name }}</td>
+    <td>{{plan.product.description}}</td>
+    <td>&#x20b9; {{ plan.amount|split_zeros }} per {{plan.interval}}</td>
+    <td>{{ plan.product.type }}</td>
+
+  </tr>
+ {% endfor %}
+
+</table>
+
+<div style="font-size:20px;" >
+   
+        {% if page_obj.has_previous %}
+        <a  href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+    
+    
+    
+         {% if page_obj.has_next %}
+         <a style="float:right;" href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    
+</div>
+                            <!-- {% include 'messages.html' %} -->
+
+<div style="margin-top: 50px;">
+                            <form  method="POST" class="form" role="form" autocomplete="off">
+                              {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="cc_name">Card Holder's Email</label>
+                                    <input type="email" class="form-control" id="card_email"  name="card_email" title="Enter your email" required="required" value="{{customer_email}}">
+                                    <input type="hidden" name="reg_email" value="{{customer_email}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Choose Plan</label>
+                                <select class="form-control" name="plan" size="0" id="plan" >
+                                    <option value="None">None</option>
+                                    {% for plan in object_list %}
+                                    <option  id="{{plan.product.id}}"  id_price="{{plan.amount}}" value="{{plan.id}}">{{ plan.product.name }} per {{ plan.interval }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                           <div id="show-me" style="display:none;">
+                                <div class="row"  >
+                                    <label class="col-md-12">Amount &#x20b9;</label>
+                                
+                                    <div class="col-md-4">
+                                    <input type="text" id="pay" class="form-control" disabled="">
+                                    </div>
+                                    </div>
+                               
+                        </div>
+                                <hr>
+                                <div class="form-group row" style="margin-block: 35px;">
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-default btn-lg btn-block">Cancel</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success btn-lg btn-block">Subscribe</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+              </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+   $('#plan').click(function() {
+       if($(this).attr('id') == 'plan') {
+            $('#show-me').show();
+            var element = $(this).find('option:selected');
+            let id = element.attr('id_price');
+            $('#pay').val(id);
+                      
+       }
+
+       else {
+            $('#show-me').hide();
+            $('#show-me').find("input,select,textarea,button").prop('disabled',true);
+           
+       }
+   });
+});
+
+
+
+</script>
+{% endblock content %}

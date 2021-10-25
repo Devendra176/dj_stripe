@@ -1,0 +1,74 @@
+{% extends 'base/side.html' %}
+<!------ Include the above in your HEAD tag ---------->
+{%  load customtag %}
+{% block content %}
+
+   <div class="col-md-6 offset-md-3"style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+
+                    <!-- form card cc payment -->
+                    <div class="card card-outline-secondary">
+                        <div class="card-body" style="width: max-content;">
+                            <h3 class="text-center">Subscribed Plans By Me</h3>
+                            <hr>
+                            {% if object_list %}
+                            <table>
+  <tr>
+    <th>S.NO.</th>
+    <th>Plan name</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Strated date</th>
+    <th>Next Billing date</th>
+    <th>Status</th>
+    <th>Cancel</th>
+    <th>Cancel date</th>
+  </tr>
+{% for plan in object_list %}
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{plan.plan.product.name }}</td>
+    <td>{{plan.plan.product.description }}</td>
+    <td>{{ plan.plan.amount|split_zeros }} &#x20b9; per {{plan.plan.interval }} </td>
+    <td>{{ plan.created }}</td>
+    <td>{{plan.current_period_end}}</td>
+    <td {% if plan.status == 'active' %} style="color:green;" {% else %} style="color:red;" {%endif%}>{{plan.status}}</td>
+    <td>{% if plan.status == 'active'  %}<a onclick="deletesubs(this); return false;" href_url="{% url 'delete_sub' %}" id_sub="{{plan.id}}"><i class="fa fa-trash" style="font-size:30px;"></i></a>{%endif%}</td>
+    <td>{{plan.canceled_at}}</td>
+ 
+
+  </tr>
+ {% endfor %}
+</table>
+{% else %}
+No plans subscribed yet
+{% endif %}
+                            <!-- {% include 'messages.html' %} -->
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+<script type="text/javascript">
+
+function deletesubs(obj){
+  var url_building_delete= $(obj).attr('href_url');
+  let id= $(obj).attr('id_sub');
+  var c  = confirm("Are you sure you want to Cancel the Subscription?");
+  if (c){
+    $.ajax({        
+        type:'POST',
+        url: url_building_delete,
+        data: {csrfmiddlewaretoken:window.CSRF_TOKEN,
+               id:id },                                        
+        success:function(data){
+          if(data.status){
+              window.location.reload(); 
+            }else{
+              window.location.reload();
+            }         
+           }
+       });
+
+}
+}
+</script>
+
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends 'base/side.html' %}
+<!------ Include the above in your HEAD tag ---------->
+{% block content %}
+
+   <div class="col-md-6 offset-md-3"style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+                    <div class="card card-outline-secondary">
+                        <div class="card-body">
+                            <h3 class="text-center">join with us</h3>
+                            <hr>
+
+
+                           
+
+<div >
+                            <form  method="POST" class="form" role="form" autocomplete="off">
+                              {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="cc_name">Username</label>
+                                    <input type="text" class="form-control" id="username"  name="username" placeholder="Enter your Unique username" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cc_name">Password</label>
+                                    <input type="password" class="form-control" id="password"  name="password" placeholder="Enter your Unique username" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cc_name">Card Holder's Email</label>
+                                    <input type="email" class="form-control" id="card_email"  name="card_email" title="Enter your email" placeholder="Enter your email" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cc_name">Card Holder's Address</label>
+                                    <input type="text" class="form-control" id="user_address"  name="user_address" title="Enter your Address" placeholder="Enter your Address" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cc_name">Card Holder's Phone</label>
+                                    <input type="text" class="form-control" id="user_phone"  name="user_phone" title="Enter your phone nubmer"  placeholder="Enter your phone nubmer" pattern="^\d{10}$" maxlength="10" required="required">
+                                </div>
+   
+                                <hr>
+                                <div class="form-group">
+                                    <label>Card Number</label>
+                                    <input type="text" class="form-control" autocomplete="off" maxlength="20"  title="Credit card number"  name="card_num" required="">
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-12">Card Exp. Date</label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="cc_exp_mo" size="0">
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="cc_exp_yr" size="0">
+                                            <option value="2021">2021</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="password" class="form-control" autocomplete="off" maxlength="3"  name="cvc"pattern="\d{3}" title="Three digits at back of your card" required="" placeholder="CVC">
+                                    </div>
+                                </div>
+                              <div class="form-group row" style="margin-block: 35px;">
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-default btn-lg btn-block">Cancel</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success btn-lg btn-block">Join</button>
+                                    </div>
+                                </div>
+                                <hr>
+                            </form>
+
+                        </div>
+                    </div>
+</div>
+
+{% endblock content %}

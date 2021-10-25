@@ -1,0 +1,84 @@
+{% extends 'base/side.html' %}
+<!------ Include the above in your HEAD tag ---------->
+{%  load customtag %}
+{% block content %}
+
+   <div class="col-md-6 offset-md-3"style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+
+                    <!-- form card cc payment -->
+                    <div class="card card-outline-secondary">
+                        <div class="card-body" style="width: max-content;">
+                            <h3 class="text-center">Plans Subscribed  By Users
+                            <a onclick="update_record(this); return false;" 
+                             href_url="{% url 'products:admin_update_subcription_list' %}" 
+                             style="font-size:15px;cursor:pointer;">Update</a>
+                            </h3>
+                            <hr>
+                            {% if object_list %}
+                            <table>
+  <tr>
+    <th>S.NO.</th>
+    <th>Customer</th>
+    <th>Plan name</th>
+    <th>Amount</th>
+    <th>Recurrring</th>
+    <th>Started date</th>
+    <th>Next Billing Date</th>
+    <th>Status</th>
+  </tr>
+{% for plan in object_list %}
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{plan.customer.email }}</td>
+    <td>{{ plan.plan.product.name }}</td>
+    <td> &#x20b9; {{plan.plan.amount|split_zeros}}</td>
+    <td>per {{ plan.plan.interval }}</td>
+    <td>{{ plan.created}}</td>
+    <td>{{plan.current_period_end}}</td>
+    <td  {% if plan.status == 'active' %} style="color:green;"{%else%} style="color:red;" {%endif%}  >{{plan.status}}</td>
+    {% if plan.status != 'active' %}
+    <td><a onclick="admin_delete_subscription(this); return false;" href_url="{% url 'products:admin_delete_subcription_list' plan.djstripe_id %}" id_sub="{{plan.djstripe_id}}"><i class="fa fa-trash" style="font-size:30px;"></i>
+    </a></td>
+    {%endif%}
+
+  </tr>
+ {% endfor %}
+</table>
+{% else %}
+No plans subscribed by any user
+{% endif %}
+                            <!-- {% include 'messages.html' %} -->
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+<script type="text/javascript">
+    function update_record(obj){
+  var url_subscription_update= $(obj).attr('href_url');
+    $.ajax({        
+        type:'POST',
+        url: url_subscription_update,
+        data: {csrfmiddlewaretoken:window.CSRF_TOKEN},                                        
+        success:function(data){
+              console.log(data.status)
+              window.location.reload();            
+           }
+
+       });
+}
+
+function admin_delete_subscription(obj){
+  var url_subscription_delete= $(obj).attr('href_url');
+  let id_sub=$(obj).attr('id_sub')
+    $.ajax({        
+        type:'POST',
+        url: url_subscription_delete,
+        data: {csrfmiddlewaretoken:window.CSRF_TOKEN,id_sub:id_sub},                                        
+        success:function(data){
+              console.log(data.status)
+              window.location.reload();            
+           }
+
+       });
+}
+</script>
+{% endblock content %}

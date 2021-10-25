@@ -1,0 +1,152 @@
+{% block head %}
+{% load static %}
+{% load customtag %}
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'js/cookies.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/edit_profile.js' %}" ></script>
+<script type="text/javascript" src="{% static 'js/signin.js' %}" ></script>
+
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/side.css' %}">
+
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+
+  color: slategrey;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<!------ Include the above in your HEAD tag ---------->
+{% endblock head %}
+{% block navbar %}
+<div id="throbber"></div>
+<div id="noty-holder"></div>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+   <!--          <a class="navbar-brand" href="https://bryanrojasq.wordpress.com">
+                <img src="http://placehold.it/200x50&text=LOGO" alt="LOGO">
+            </a> -->
+        </div>
+        <!-- Top Menu Items -->
+        <ul class="nav navbar-right top-nav">
+<!--             <li><a href="#" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Stats"><i class="fa fa-bar-chart-o"></i>
+                </a>
+            </li>   -->          
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right: 40px;">Users<b class="fa fa-angle-down"></b></a>
+                <ul class="dropdown-menu">
+                    {% if user.is_authenticated %}
+                    {% if user.is_staff == False %}
+                    <li><a href="{% url 'edit_profile' request.user.pk %}"><i class="fa fa-fw fa-user"></i> Edit Profile</a></li>
+                    <li><a href="{% url 'edit_card_details' request.user.pk %}"><i class="fa fa-fw fa-cog"></i> Edit card</a></li>
+                    <li class="divider"></li>
+                    {%endif%}
+                    {%endif%}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
+                    {%else%}
+                    <li><a href="{% url 'signin_user' %}"><i class="fa fa-sign-in"></i> Login</a></li>
+                    {%endif%}
+                </ul>
+            </li>
+        </ul>
+        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav" >
+<!--                 {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'signin_user' %}"><i class="fa fa-sign-in"></i> Sign in</a>
+                </li>
+                {% endif %} -->
+
+                {% if  not user.is_authenticated %}
+                <li>
+                    <a href="{% url 'create_user' %}"><i class="fa fa-fw fa-user-plus"></i> Join with stripe</a>
+
+                </li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                {% if user.is_staff == False %}
+                <li>
+                    <a href="{% url 'payment-index' %}" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-credit-card" aria-hidden="true"></i>  Payment</a>
+
+                </li>
+                
+                <li>
+                    <a href="{% url 'payments-subscription' %}" data-toggle="collapse" data-target="#submenu-2"> Subscription Plan</a>
+                </li>
+                
+                
+                <li>
+                    <a href="{% url 'subscription_users' request.user.pk %}"> Subscribed Plans</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'products:add_product_admin' %}"><i class="fa fa-fw fa fa-question-circle"></i> Add Plans</a>
+                </li>
+                <li>
+                    <a href="{% url 'products:admin_product_list' %}"> Plans</a>
+                </li>
+                <li>
+                    <a href="{% url 'products:admin_subscription_list' %}"> Subscribed Plans</a>
+                </li>
+                {% endif %}
+
+
+                {% endif %}
+
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
+{% endblock navbar %}
+
+    <div id="page-wrapper" style="margin-block: -10px;">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row" id="main" >
+                <div class="col-sm-12 col-md-12 well" id="content">
+                    <h1>{% if request.user.pk %}Welcome {{ request.user.username }} in payment method using stripe{% else %} Please sign in for using stripe {% endif %}</h1>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    
+    <!-- /#page-wrapper -->
+</div><!-- /#wrapper -->
+{% include 'messages.html' %}
+<script type="text/javascript" src="{% static 'js/side.js' %}" ></script>
+{% block content %}{% endblock content %}

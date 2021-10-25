@@ -1,0 +1,85 @@
+{% extends 'base/side.html' %}
+{% block content %}
+   <div class="col-md-6 offset-md-3"style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+
+                    <!-- form card cc payment -->
+                    <div class="card card-outline-secondary">
+                        <div class="card-body">
+                            <h3 class="text-center">Edit card details</h3>
+                            <hr>
+
+<div style="margin-top: 50px;">
+                            <form  method="POST" class="form" role="form" autocomplete="off">
+                              {% csrf_token %}
+                              <input type="hidden" name="paymentmethod_id" value="{{PaymentMethod_id}}">
+                              <input type="hidden" name="cus_id" value="{{cus_id}}">
+                              <input type="hidden" name="card_email" value={{request.user.email}}>
+                              <input type="hidden" name="user_phone" value="{{user_phone}}">
+                                <!-- <div class="form-group">
+                                    <label for="cc_name">Card Holder's Email</label>
+                                    <input type="email" class="form-control" id="cc_email" name="card_email" title="Enter your Email" required="required" value={{request.user.email}}>
+                                </div> -->
+<!--                                 <div class="form-group">
+                                    <label for="cc_name">Card Holder's Phone</label>
+                                    <input type="text" class="form-control" id="user_phone"  name="user_phone" title="Enter your phone nubmer"  placeholder="Enter your phone nubmer" pattern="^\d{10}$" maxlength="10" required="required">
+                                </div> -->
+                                <div class="form-group">
+                                    <label>Card Number</label>
+                                    <input type="text" class="form-control" autocomplete="off" maxlength="20"  title="Credit card number" placeholder="4242 4242 4242 4242 " name="card_num" required="">
+                                </div>
+                            <div class="form-group row">
+                                    <label class="col-md-12">Card Exp. Date</label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="cc_exp_mo" size="0">
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="cc_exp_yr" size="0">
+                                            <option value="2021">2021</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="password" class="form-control" autocomplete="off" maxlength="3"  name="cvc"pattern="\d{3}" title="Three digits at back of your card" required="" placeholder="CVC">
+                                    </div>
+                                </div>
+
+
+                                <hr>
+                                <div class="form-group">
+                                    <label for="password">Enter password to verify </label>
+                                    <input type="password" class="form-control"  name="password" title="Enter your password" required="required">
+                                </div>
+                                <hr>
+                                <div class="form-group row" style="margin-block: 35px;">
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-default btn-lg btn-block">Discard Changes</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+              </div>
+</div>
+{%endblock content%}

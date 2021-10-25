@@ -1,0 +1,86 @@
+{% extends 'base/side.html' %}
+{% block content %}
+
+<!------ Include the above in your HEAD tag ---------->
+
+   <div class="col-md-6 offset-md-3" style="margin-inline-start: 450px;">
+                    <span class="anchor" id="formPayment"></span>
+                    <hr class="my-5">
+
+                    <!-- form card cc payment -->
+                    <div class="card card-outline-secondary">
+                        <div class="card-body">
+                            <h3 class="text-center">Edit Profile</h3>
+                            <hr>
+                            
+
+<div style="margin-top: 50px;">
+                            <form  method="POST" class="form" role="form" autocomplete="off">
+                              {% csrf_token %}
+                                <input type="hidden" id="cus_id" name="cus_id" value="{{cus_id}}">
+                                <input type="hidden"  id="PaymentMethod_id" name="PaymentMethod_id" value="{{PaymentMethod_id}}">
+                                <div class="form-group">
+                                    <label for="cc_name">Card Holder's Email</label>
+                                    <input type="email" class="form-control" id="card_email" name="card_email" title="Enter your Email" required="required" value="{{customer_email}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone no.</label>
+                                    <input type="text" class="form-control" autocomplete="off" maxlength="12"  title="Enter phone number" id="phone" name="phone" pattern="^\d{10}$"required="" value="{{user_phone}}">
+                                </div>
+                                <div>
+                                <a id="change_password" style="cursor: pointer;">Change Password</a>
+                                </div>
+                                <div id="show-me" style="display:none;">
+                                    <div class="form-group">
+                                        <label for="cc_name">Enter old password</label>
+                                        <input type="password" class="form-control" id="old_password" name="old_password" title="Enter your old password" disabled="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cc_name">Enter new password</label>
+                                        <input type="password" class="form-control" id="new_password" name="new_password" title="Enter your new password" disabled="">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-default btn-lg btn-block">Discard changes</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" id="save_profile" href_url="{% url 'edit_profile' request.user.pk %}" class="btn btn-success btn-lg btn-block">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+<!--                             <div class="form-group row">
+                                    <div class="col-md-6">
+            <button class="btn btn-success btn-lg btn-block"> <a href="{% url 'payments-subscription' %}">Subscription</a></button>
+                                    </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+   $('#change_password').click(function() {
+       if($(this).attr('id') == 'change_password') {
+            $('#show-me').slideToggle();
+            $('#show-me').find("input").prop('disabled',false);
+              
+       }
+
+       else {
+            $('#show-me').hide();
+            $('#show-me').find("input").prop('disabled',true);
+           
+       }
+   });
+});
+
+
+
+</script>
+
+
+{% endblock content %}
